@@ -1,0 +1,10 @@
+RUBRICA: GRUPPO 7
+╔═══════════════════════════════════════╗
+║                                       ║
+║                                       ║
+║   Inserisci nome:                     ║
+║   Inserisci cognome:                  ║
+║   Inserisci telefono:                 ║
+║                                       ║
+║                                       ║
+╚═══════════════════════════════════════╝
