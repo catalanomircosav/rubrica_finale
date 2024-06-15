@@ -69,63 +69,44 @@ void modifica_contatto(Rubrica* rub)
     inizializza_interfaccia(&i, "interfaces\\modifica_contatto.txt", 5);
 
     int scelta;
-    scelta = 0;
-
     int pos;
-    pos = 0;
-
     int val;
-    val = 0;
 
     Stringa aux;
-
     Contatto cont;
 
-    int a;
-    a = 1;
-
-    int b;
-    b = 5;
-
-    int d;
-    d = 5;
-
-    inputc(a, b, &pos, "Inserire la posizione del contatto da modificare: ", INTEGER);
+    inputc(0, leggi_dim_rubrica(*rub), &pos, "Inserire la posizione del contatto da modificare: ", INTEGER);
 
     cont = leggi_contatto(*rub, pos);
 
     do
     {
         stampa_interfaccia(i);
-        inputc(a, d, &scelta, "Inserisci scelta: ", INTEGER);
-
-        b = MAX_LUN_STRINGA;
+        inputc(1, 5, &scelta, "Inserisci scelta: ", INTEGER);
 
         if (scelta == 1)
         {
-            inputc(a, b, &aux, "Inserire nome: ", STRING);
+            inputc(1, MAX_LUN_STRINGA, &aux, "Inserire nome: ", STRING);
             scrivi_nome_contatto(&cont, aux);
-            scrivi_contatto(rub, pos - 1, cont);
+            scrivi_contatto(rub, pos, cont);
         }
         else if (scelta == 2)
         {
-            inputc(a, b, &aux, "Inserire cognome: ", STRING);
+            inputc(1, MAX_LUN_STRINGA, &aux, "Inserire cognome: ", STRING);
             scrivi_cognome_contatto(&cont, aux);
-            scrivi_contatto(rub, pos - 1, cont);
+            scrivi_contatto(rub, pos, cont);
         }
         else if (scelta == 3)
         {
-            inputc(a, b, &aux, "Inserire telefono: ", STRING);
+            inputc(1, MAX_LUN_STRINGA, &aux, "Inserire telefono: ", STRING);
             scrivi_telefono_contatto(&cont, aux);
-            scrivi_contatto(rub, pos - 1, cont);
+            scrivi_contatto(rub, pos, cont);
         }
         else if (scelta == 4)
         {
-            a = 0;
-            b = 2;
-            inputc(a, b, &val, "Inserire stato: ", INTEGER);
+            inputc(0, 2, &val, "Inserire stato: ", INTEGER);
             scrivi_stato_contatto(&cont, val);
-            scrivi_contatto(rub, pos - 1, cont);
+            scrivi_contatto(rub, pos, cont);
         }
         else if (scelta == 5)
         {
@@ -136,95 +117,27 @@ void modifica_contatto(Rubrica* rub)
 
     printf("Contatto modificato correttamente.");
 }
-int trova_indice(Rubrica rub, Contatto cont)
+void cancella_contatto(Rubrica* rub)
 {
-    int indice = -1;
-    int i;
-
-    while (i < leggi_dim_rubrica(rub) && indice == -1)
-    {
-        char* nome_rub = leggi_stringa(leggi_nome_contatto(leggi_contatto(rub, i)));
-        char* cognome_rub = leggi_stringa(leggi_cognome_contatto(leggi_contatto(rub, i)));
-
-        if (nome_rub && cognome_rub &&
-            strcmp(nome_rub, leggi_stringa(leggi_nome_contatto(cont))) == 0 &&
-            strcmp(cognome_rub, leggi_stringa(leggi_cognome_contatto(cont))) == 0)
-        {
-            indice = i;
-        }
-        else
-        {
-            if (leggi_stringa(leggi_nome_contatto(cont)) != NULL)
-            {
-                if (strcmp(nome_rub, leggi_stringa(leggi_nome_contatto(cont))) == 0)
-                {
-                    indice = i;
-                }
-            }
-            else if (leggi_stringa(leggi_cognome_contatto(cont)) != NULL)
-            {
-                if (strcmp(cognome_rub, leggi_stringa(leggi_cognome_contatto(cont))) == 0)
-                {
-                    indice = i;
-                }
-            }
-        }
-        i = i + 1;
-    }
-    return indice;
-}
-void cancella_contatto(Rubrica* rub, Contatto cont) {
-    int i;
-    i = 0;
-
     int indice;
-    int indici[MAX_NUM_CONTATTI];
 
-    Rubrica aux;
-    aux = ricerca_contatto(*rub, cont);
+    stampa_rubrica(*rub);
+    inputc(0, leggi_dim_rubrica(*rub) - 1, &indice, "Inserisci la posizione del contatto da cancellare: ", INTEGER);
 
-    int aux_dim = leggi_dim_rubrica(aux);
-    int pos;
-
-    if (leggi_dim_rubrica(*rub) > 0) {
-        if (aux_dim > 1) {
-            stampa_rubrica(aux);
-
-            for (i = 0; i < aux_dim; ++i) {
-                indici[i] = trova_indice(*rub, leggi_contatto(aux, i));
-            }
-
-            printf("Inserisci la posizione del contatto da eliminare (%d) - (%d): ", indici[0], indici[aux_dim - 1]);
-            inputc(1, aux_dim, &pos, "", INTEGER);
-            scrivi_contatto(rub, pos - 1, leggi_contatto(*rub, pos));
-            scrivi_dim_rubrica(rub, leggi_dim_rubrica(*rub) - 1);
-        }
-        else {
-            indice = trova_indice(*rub, cont);
-            if (indice == -1) {
-                printf("Contatto non trovato.\n");
-            }
-            else {
-                while (indice < leggi_dim_rubrica(*rub) - 1) {
-                    scrivi_contatto(rub, indice, leggi_contatto(*rub, indice + 1));
-                    indice++;
-                }
-                scrivi_dim_rubrica(rub, leggi_dim_rubrica(*rub) - 1);
-            }
-        }
+    while (indice < leggi_dim_rubrica(*rub))
+    {
+        scrivi_contatto(rub, indice, leggi_contatto(*rub, indice + 1));
+        indice = indice + 1;
     }
-    else {
-        printf("La rubrica e' vuota.");
-        Sleep(2);
-    }
+    scrivi_dim_rubrica(rub, leggi_dim_rubrica(*rub) - 1);
 }
-
 void stampa_rubrica(Rubrica rub)
 {
     int i;
     i = 0;
     while (i < leggi_dim_rubrica(rub))
     {
+        printf("%d.\n", i);
         stampa_contatto(leggi_contatto(rub, i));
         i = i + 1;
     }
@@ -275,7 +188,7 @@ Rubrica ricerca_contatto(Rubrica rub, Contatto cont)
 void ordina_rubrica(Rubrica* rub)
 {
     Interfaccia inter;
-    inizializza_interfaccia(&inter, ".\\interfaces\\ordina_rubrica.txt", 4);
+    inizializza_interfaccia(&inter, "interfaces\\ordina_rubrica.txt", 4);
     stampa_interfaccia(inter);
 
     int scelta;

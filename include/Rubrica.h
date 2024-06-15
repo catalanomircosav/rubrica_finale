@@ -23,7 +23,7 @@ void scrivi_contatto(Rubrica* rub, int pos, Contatto cont);
 
 // * funzioni di inserimento, cancellazione, modifica, ricerca, ordinamento
 Contatto inserisci_contatto();
-void cancella_contatto(Rubrica* rub, Contatto cont);
+void cancella_contatto(Rubrica* rub);
 void modifica_contatto(Rubrica* rub);
 Rubrica ricerca_contatto(Rubrica rub, Contatto cont);
 

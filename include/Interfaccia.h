@@ -34,6 +34,6 @@ void scrivi_scelta_max(Interfaccia* interfaccia, int max);
 void stampa_interfaccia(Interfaccia interfaccia);
 
 // * funzione di inizializzazione dell'interfaccia
-void inizializza_interfaccia(Interfaccia* interfaccia, char* file, int scelta_max);
+void inizializza_interfaccia(Interfaccia* interfaccia, char* nome_file, int scelta_max);
 
 #endif // __INTERFACCIA_H__

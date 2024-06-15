@@ -1,13 +1,13 @@
 RUBRICA: GRUPPO 7
 ╔═══════════════════════════════════════╗
-║                                       ║
-║                                       ║
+║                                       ║                             
 ║         1. Inserisci contatto         ║
 ║         2. Cancella contatto          ║
 ║         3. Modifica contatto          ║
 ║         4. Ricerca contatto           ║
 ║         5. Ordina rubrica             ║
 ║         6. Visualizza rubrica         ║
-║                                       ║
+║         7. Importa contatti da file   ║
+║         8. Esporta contatti su file   ║
 ║                                       ║
 ╚═══════════════════════════════════════╝

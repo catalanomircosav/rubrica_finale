@@ -28,9 +28,9 @@ void scrivi_scelta_max(Interfaccia* interfaccia, int max)
 }
 
 // * funzione di inizializzazione dell'interfaccia
-void inizializza_interfaccia(Interfaccia* interfaccia, char* file, int scelta_max)
+void inizializza_interfaccia(Interfaccia* interfaccia, char* nome_file, int scelta_max)
 {
-    scrivi_percorso_file(interfaccia, file);
+    scrivi_percorso_file(interfaccia, nome_file);
     scrivi_scelta_max(interfaccia, scelta_max);
 }
 

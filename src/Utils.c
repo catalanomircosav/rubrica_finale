@@ -15,19 +15,14 @@ int inputc(int a, int b, void* valore, char* messaggio, DataType tipo)
         else if (tipo == STRING)
         {
             char msg[MAX_LUN_STRINGA];
-            // Pulisci il buffer per evitare letture precedenti
             memset(msg, 0, MAX_LUN_STRINGA);
-
-            // Usa fgets per leggere l'intera linea
             fgets(msg, MAX_LUN_STRINGA, stdin);
 
-            // Rimuovi il newline finale se presente
             size_t len = strlen(msg);
             if (len > 0 && msg[len - 1] == '\n') {
                 msg[len - 1] = '\0';
             }
-
-            // Passa il buffer alla funzione scrivi_stringa
+            
             scrivi_stringa((Stringa*)valore, msg);
         }
 

@@ -1,5 +1,7 @@
 #include "Rubrica.h"
 #include "Utils.h"
+#include "File.h"
+
 #include <unistd.h>
 
 int main(int argc, char** argv)
@@ -10,19 +12,13 @@ int main(int argc, char** argv)
     Rubrica rub;
     scrivi_dim_rubrica(&rub, 0);
 
-    int a;
-    a = 1;
-
-    int b;
-    b = 6;
-
-    inizializza_interfaccia(&inter, ".\\interfaces\\principale.txt", 6);
+    inizializza_interfaccia(&inter, "interfaces\\principale.txt", 6);
 
     do
     {
         stampa_interfaccia(inter);
 
-        if (inputc(a, b, &scelta, "Inserisci scelta: ", INTEGER))
+        if (inputc(1, 9, &scelta, "Inserisci scelta: ", INTEGER))
         {
             if (scelta == 1)
             {
@@ -31,7 +27,7 @@ int main(int argc, char** argv)
             }
             else if (scelta == 2)
             {
-                cancella_contatto(&rub, inserisci_contatto());
+                cancella_contatto(&rub);
             }
             else if (scelta == 3)
             {
@@ -41,6 +37,7 @@ int main(int argc, char** argv)
             {
                 Rubrica aux;
                 aux = ricerca_contatto(rub, inserisci_contatto());
+
                 if (leggi_dim_rubrica(aux) > 0)
                 {
                     stampa_rubrica(aux);
@@ -61,12 +58,20 @@ int main(int argc, char** argv)
             else if (scelta == 6)
             {
                 stampa_rubrica(rub);
-                sleep(4);
+                sleep(3);
+            }
+            else if (scelta == 7)
+            {
+                rub = importa_contatto_da_file(".\\file\\rubrica.bin");
+            }
+            else if (scelta == 8)
+            {
+                esporta_rubrica_su_file(rub, ".\\file\\rubrica.bin");
             }
         }
         system("cls");
 
-    } while (scelta != 7);
+    } while (scelta != 9);
     printf("Uscita...");
 
     system("pause");
