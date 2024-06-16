@@ -1,38 +1,45 @@
 #include "Utils.h"
 
-int inputc(int a, int b, void* valore, char* messaggio, DataType tipo)
+void inputc_int(int a, int b, int* valore, char* messaggio)
 {
-    int corretto = 0;
-
     do
     {
         printf("%s", messaggio);
-
-        if (tipo == INTEGER)
+        scanf("%d", valore);
+        if (*valore < a || *valore > b)
         {
-            scanf("%d", (int*)valore);
+            printf("Valore intero non ammesso.\n");
         }
-        else if (tipo == STRING)
+    } while (*valore < a || *valore > b);
+}
+
+void inputc_stringa(int a, int b, Stringa* stringa, char* messaggio)
+{
+    char buffer[b];
+    do
+    {
+        printf("%s", messaggio);
+        scanf("%s", buffer);
+
+
+    } while (strlen(buffer) < a || strlen(buffer) > b);
+    
+    scrivi_stringa(stringa, buffer);
+}
+
+void inputc_char(int a, int b, char* valore, char* messaggio)
+{
+    do
+    {
+        printf("%s", messaggio);
+        scanf("%c", valore);
+
+        if (*valore < a || *valore > b)
         {
-            char msg[MAX_LUN_STRINGA];
-            memset(msg, 0, MAX_LUN_STRINGA);
-            fgets(msg, MAX_LUN_STRINGA, stdin);
-
-            size_t len = strlen(msg);
-            if (len > 0 && msg[len - 1] == '\n') {
-                msg[len - 1] = '\0';
-            }
-            
-            scrivi_stringa((Stringa*)valore, msg);
+            printf("Valore carattere non ammesso.\n");
+            fflush(stdin);
         }
-
-    } while ((tipo == INTEGER && (*(int*)valore < a || *(int*)valore > b)) ||
-        (tipo == STRING && (leggi_lun_stringa(*(Stringa*)valore) < a || leggi_lun_stringa(*(Stringa*)valore) > b)));
-
-    fflush(stdin);
-
-    corretto = 1;
-    return corretto;
+    } while (*valore < a || *valore > b);
 }
 
 void  gotoxy(int x, int  y) {

@@ -31,12 +31,6 @@ Contatto inserisci_contatto()
 {
     int var;
 
-    int a;
-    a = 1;
-
-    int b;
-    b = MAX_LUN_STRINGA;
-
     Interfaccia inserimento;
     Stringa str;
 
@@ -48,15 +42,15 @@ Contatto inserisci_contatto()
     stampa_interfaccia(inserimento);
 
     gotoxy(20, 4);
-    inputc(a, b, &str, "", STRING);
+    inputc_stringa(1, MAX_LUN_STRINGA, &str, "");
     scrivi_nome_contatto(&aux, str);
 
     gotoxy(23, 5);
-    inputc(a, b, &str, "", STRING);
+    inputc_stringa(1, MAX_LUN_STRINGA, &str, "");
     scrivi_cognome_contatto(&aux, str);
 
     gotoxy(24, 6);
-    inputc(a, b, &str, "", STRING);
+    inputc_stringa(1, MAX_LUN_STRINGA, &str, "");
     scrivi_telefono_contatto(&aux, str);
 
     scrivi_stato_contatto(&aux, 0);
@@ -75,36 +69,37 @@ void modifica_contatto(Rubrica* rub)
     Stringa aux;
     Contatto cont;
 
-    inputc(0, leggi_dim_rubrica(*rub), &pos, "Inserire la posizione del contatto da modificare: ", INTEGER);
+    inputc_int(0, leggi_dim_rubrica(*rub), &pos, "Inserire la posizione del contatto da modificare: ");
 
     cont = leggi_contatto(*rub, pos);
 
     do
     {
         stampa_interfaccia(i);
-        inputc(1, 5, &scelta, "Inserisci scelta: ", INTEGER);
+        inputc_int(1, 5, &scelta, "Inserisci scelta: ");
 
         if (scelta == 1)
         {
-            inputc(1, MAX_LUN_STRINGA, &aux, "Inserire nome: ", STRING);
+            inputc_stringa(1, MAX_LUN_STRINGA, &aux, "Inserire nome: ");
+            printf("NUOVO NOME: %s", leggi_stringa(aux));
             scrivi_nome_contatto(&cont, aux);
             scrivi_contatto(rub, pos, cont);
         }
         else if (scelta == 2)
         {
-            inputc(1, MAX_LUN_STRINGA, &aux, "Inserire cognome: ", STRING);
+            inputc_stringa(1, MAX_LUN_STRINGA, &aux, "Inserire cognome: ");
             scrivi_cognome_contatto(&cont, aux);
             scrivi_contatto(rub, pos, cont);
         }
         else if (scelta == 3)
         {
-            inputc(1, MAX_LUN_STRINGA, &aux, "Inserire telefono: ", STRING);
+            inputc_stringa(1, MAX_LUN_STRINGA, &aux, "Inserire telefono: ");
             scrivi_telefono_contatto(&cont, aux);
             scrivi_contatto(rub, pos, cont);
         }
         else if (scelta == 4)
         {
-            inputc(0, 2, &val, "Inserire stato: ", INTEGER);
+            inputc_int(0, 2, &val, "Inserire stato: ");
             scrivi_stato_contatto(&cont, val);
             scrivi_contatto(rub, pos, cont);
         }
@@ -122,7 +117,7 @@ void cancella_contatto(Rubrica* rub)
     int indice;
 
     stampa_rubrica(*rub);
-    inputc(0, leggi_dim_rubrica(*rub) - 1, &indice, "Inserisci la posizione del contatto da cancellare: ", INTEGER);
+    inputc_int(0, leggi_dim_rubrica(*rub) - 1, &indice, "Inserisci la posizione del contatto da cancellare: ");
 
     while (indice < leggi_dim_rubrica(*rub))
     {
@@ -135,13 +130,15 @@ void stampa_rubrica(Rubrica rub)
 {
     int i;
     i = 0;
+
     while (i < leggi_dim_rubrica(rub))
     {
-        printf("%d.\n", i);
+        printf("Contatto %d:\n", i);
         stampa_contatto(leggi_contatto(rub, i));
         i = i + 1;
     }
 }
+
 Rubrica ricerca_contatto(Rubrica rub, Contatto cont)
 {
     Rubrica aux;
@@ -164,7 +161,7 @@ Rubrica ricerca_contatto(Rubrica rub, Contatto cont)
         }
         else
         {
-            if (leggi_stringa(leggi_nome_contatto(cont)) != NULL)
+            if (leggi_stringa(leggi_nome_contatto(cont)))
             {
                 if (strcmp(nome_rub, leggi_stringa(leggi_nome_contatto(cont))) == 0)
                 {
@@ -172,7 +169,7 @@ Rubrica ricerca_contatto(Rubrica rub, Contatto cont)
                     scrivi_dim_rubrica(&aux, leggi_dim_rubrica(aux) + 1);
                 }
             }
-            else if (leggi_stringa(leggi_cognome_contatto(cont)) != NULL)
+            else if (leggi_stringa(leggi_cognome_contatto(cont)))
             {
                 if (strcmp(cognome_rub, leggi_stringa(leggi_cognome_contatto(cont))) == 0)
                 {
@@ -188,55 +185,69 @@ Rubrica ricerca_contatto(Rubrica rub, Contatto cont)
 void ordina_rubrica(Rubrica* rub)
 {
     Interfaccia inter;
+
+    int scelta;
+    int i;
+
+    int risultato;
+    int ordinato;
+
+
+    Contatto contatto1;
+    Contatto contatto2;
+
+    Stringa str1;
+    Stringa str2;
+
+
     inizializza_interfaccia(&inter, "interfaces\\ordina_rubrica.txt", 4);
     stampa_interfaccia(inter);
 
-    int scelta;
-    int risultato;
+    inputc_int(1, 5, &scelta, "Inserisci scelta: ");
 
-    inputc(1, 4, &scelta, "Inserisci scelta: ", INTEGER);
+    int dim;
+    dim = leggi_dim_rubrica(*rub);
+    do
+    {
+        do
+        {
+            ordinato = 1;
 
-    if (scelta < 1 || scelta > 4) {
-        printf("Scelta non valida.\n");
-        return;
-    }
+            i = 0;
 
-    int ordinato;
-    int dim = rub->dim;
+            while (i < dim - 1) {
+                contatto1 = leggi_contatto(*rub, i);
+                contatto2 = leggi_contatto(*rub, i + 1);
 
-    do {
-        ordinato = 1;
-        int i = 0;
-        while (i < dim - 1) {
-            Contatto contatto1 = rub->contatti[i];
-            Contatto contatto2 = rub->contatti[i + 1];
+                if (scelta == 1 || scelta == 3)
+                {
+                    str1 = leggi_nome_contatto(contatto1);
+                    str2 = leggi_nome_contatto(contatto2);
+                }
+                else
+                {
+                    str1 = leggi_cognome_contatto(contatto1);
+                    str2 = leggi_cognome_contatto(contatto2);
+                }
 
-            Stringa str1, str2;
-            int comparison_result;
+                if (scelta == 1 || scelta == 2)
+                {
+                    risultato = strcmp(str1.buffer, str2.buffer);
+                }
+                else
+                {
+                    risultato = strcmp(str2.buffer, str1.buffer);
+                }
 
-            if (scelta == 1 || scelta == 3) {
-                str1 = leggi_nome_contatto(contatto1);
-                str2 = leggi_nome_contatto(contatto2);
+                if (risultato > 0)
+                {
+                    scrivi_contatto(rub, i, contatto2);
+                    scrivi_contatto(rub, i + 1, contatto1);
+                    ordinato = 0;
+                }
+
+                i = i + 1;
             }
-            else {
-                str1 = leggi_cognome_contatto(contatto1);
-                str2 = leggi_cognome_contatto(contatto2);
-            }
-
-            if (scelta == 1 || scelta == 2) {
-                risultato = strcmp(str1.buffer, str2.buffer);
-            }
-            else {
-                risultato = strcmp(str2.buffer, str1.buffer);
-            }
-
-            if (risultato > 0) {
-                rub->contatti[i] = contatto2;
-                rub->contatti[i + 1] = contatto1;
-                ordinato = 0;
-            }
-
-            i++;
-        }
-    } while (!ordinato);
+        } while (!ordinato);
+    } while (scelta != 5);
 }

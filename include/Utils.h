@@ -7,13 +7,10 @@
 #include <windows.h>
 #endif
 
-typedef enum {
-    INTEGER,
-    STRING
-} DataType;
-
 // ? Funzione utilizzato per controllare che l'input da utente sia corretto
-int inputc(int a, int b, void* valore, char* messaggio, DataType tipo);
+void inputc_int(int a, int b, int* valore, char* messaggio);
+void inputc_stringa(int a, int b, Stringa* valore, char* messaggio);
+void inputc_char(int a, int b, char* valore, char* messaggio);
 
 // ? Funzione utilizzata per spostare il cursore
 void  gotoxy(int x, int  y);
